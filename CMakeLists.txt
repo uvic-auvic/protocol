@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(protocol)
 
-catkin_package( INCLUDE_DIRS include)
+catkin_package( INCLUDE_DIRS protocol)
 
-include_directories( include ${catkin_INCLUDE_DIRS})
+include_directories( protocol ${catkin_INCLUDE_DIRS})
 
 install(
   DIRECTORY include/${PROJECT_NAME}/
