@@ -68,12 +68,23 @@ typedef struct
 } protocol_motorRPM_S;
 
 // protocol_MID_POLARIS_powerEnable
+// This message is for Power Board 1
 typedef struct __attribute__((packed))
 {
     bool motorPowerEnable;
     bool _5VPowerEnable;
     bool _12V9VPowerEnable;
 } protocol_powerEnable_S;
+
+// protocol_MID_POLARIS_powerEnable
+// This message is for Power Board 2
+typedef struct __attribute__((packed))
+{
+    bool VBattPowerEnable;
+    bool _5VPowerEnable;
+    bool _12VPowerEnable;
+    bool _16VPowerEnable;
+} protocol_powerEnable2_S;
 
 // protocol_MID_POLARIS_PBMessageRequest
 typedef enum __attribute__((packed))
@@ -143,6 +154,7 @@ typedef union
     protocol_deviceName_S    POLARIS_deviceName;  // Sent by: Polaris, Received by: No One
     protocol_motorSetSpeed_S POLARIS_motorSetSpeed; // Sent by: Polaris, Received by: Motor Controller
     protocol_powerEnable_S   POLARIS_powerEnable; // Sent by: Polaris, Received by: Power Board
+    protocol_powerEnable2_S  POLARIS_powerEnable2; // Sent by: Polaris, Received by: Power Board
     protocol_PBMessageRequest_S POLARIS_PBMessageRequest; // Sent by: Polaris, Received by: Power Board 
     protocol_MCMessageRequest_S POLARIS_MCMessageRequest; // Sent by Polaris, Received by: Motor Controller
     protocol_ISOTP_S            POLARIS_MCISOTP; // Sent by Polaris, Received by: Motor Controller
