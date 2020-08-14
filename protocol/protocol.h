@@ -15,12 +15,12 @@ typedef enum __attribute__((packed))
 {
     protocol_RESERVED = 0U,
 
-    protocol_MID_POLARIS_deviceName,
-    protocol_MID_POLARIS_motorSetSpeed,
-    protocol_MID_POLARIS_powerEnable,
-    protocol_MID_POLARIS_PBMessageRequest,  // Power Board Message Request
-    protocol_MID_POLARIS_MCMessageRequest, // Motor Controller Message Request
-    protocol_MID_POLARIS_MCISOTP, // ISOTP message sent from Polaris to Motor Controller
+    protocol_MID_TRIDENT_deviceName,
+    protocol_MID_TRIDENT_motorSetSpeed,
+    protocol_MID_TRIDENT_powerEnable,
+    protocol_MID_TRIDENT_PBMessageRequest,  // Power Board Message Request
+    protocol_MID_TRIDENT_MCMessageRequest, // Motor Controller Message Request
+    protocol_MID_TRIDENT_MCISOTP, // ISOTP message sent from Trident to Motor Controller
 
 
     protocol_MID_MC_deviceName = 21U,
@@ -49,13 +49,13 @@ typedef enum
     PROTOCOL_NODE_COUNT,
 } protocol_node_E;
 
-// protocol_MID_MC_deviceName, protocol_MID_PB_deviceName, protocol_MID_POLARIS_deviceName
+// protocol_MID_MC_deviceName, protocol_MID_PB_deviceName, protocol_MID_TRIDENT_deviceName
 typedef struct __attribute__((packed))
 {
     uint8_t name[8U];
 } protocol_deviceName_S;
 
-// protocol_MID_POLARIS_motorSetSpeed
+// protocol_MID_TRIDENT_motorSetSpeed
 typedef struct __attribute__((packed))
 {
     int8_t motorSpeed[8U]; // In percent with a base of 127
@@ -67,26 +67,16 @@ typedef struct
     int16_t motorSpeed[4U]; // Motor 0 to 3 got motorRPMLow, Motor 4 to 7 for motorRPMHigh
 } protocol_motorRPM_S;
 
-// protocol_MID_POLARIS_powerEnable
-// This message is for Power Board 1
-typedef struct __attribute__((packed))
-{
-    bool motorPowerEnable;
-    bool _5VPowerEnable;
-    bool _12V9VPowerEnable;
-} protocol_powerEnable_S;
-
-// protocol_MID_POLARIS_powerEnable
-// This message is for Power Board 2
+// protocol_MID_TRIDENT_powerEnable
 typedef struct __attribute__((packed))
 {
     bool VBattPowerEnable;
     bool _5VPowerEnable;
     bool _12VPowerEnable;
     bool _16VPowerEnable;
-} protocol_powerEnable2_S;
+} protocol_powerEnable_S;
 
-// protocol_MID_POLARIS_PBMessageRequest
+// protocol_MID_TRIDENT_PBMessageRequest
 typedef enum __attribute__((packed))
 {
     PROTOCOL_PB_MESSAGE_REQUEST_MESSAGE_RID,
@@ -102,7 +92,7 @@ typedef struct __attribute__((packed))
     protocol_PBMessageRequest_message_E requestedMessage;
 } protocol_PBMessageRequest_S;
 
-// protocol_MID_POLARIS_MCMessageRequest
+// protocol_MID_TRIDENT_MCMessageRequest
 typedef enum __attribute__((packed))
 {
     PROTOCOL_MC_MESSAGE_REQUEST_MESSAGE_RID,
@@ -140,7 +130,7 @@ typedef struct __attribute__((packed))
     uint32_t rightBattCurrent; // mA
 } protocol_PBBattCurrents_S;
 
-// protocol_MID_POLARIS_MCISOTP, protocol_MID_MC_ISOTP
+// protocol_MID_TRIDENT_MCISOTP, protocol_MID_MC_ISOTP
 typedef struct
 {
     uint8_t data[8U];
@@ -151,23 +141,22 @@ typedef struct
  * ******************************/
 typedef union
 {
-    protocol_deviceName_S    POLARIS_deviceName;  // Sent by: Polaris, Received by: No One
-    protocol_motorSetSpeed_S POLARIS_motorSetSpeed; // Sent by: Polaris, Received by: Motor Controller
-    protocol_powerEnable_S   POLARIS_powerEnable; // Sent by: Polaris, Received by: Power Board
-    protocol_powerEnable2_S  POLARIS_powerEnable2; // Sent by: Polaris, Received by: Power Board
-    protocol_PBMessageRequest_S POLARIS_PBMessageRequest; // Sent by: Polaris, Received by: Power Board 
-    protocol_MCMessageRequest_S POLARIS_MCMessageRequest; // Sent by Polaris, Received by: Motor Controller
-    protocol_ISOTP_S            POLARIS_MCISOTP; // Sent by Polaris, Received by: Motor Controller
+    protocol_deviceName_S    TRIDENT_deviceName;  // Sent by: Trident, Received by: No One
+    protocol_motorSetSpeed_S TRIDENT_motorSetSpeed; // Sent by: Trident, Received by: Motor Controller
+    protocol_powerEnable_S   TRIDENT_powerEnable; // Sent by: Trident, Received by: Power Board
+    protocol_PBMessageRequest_S TRIDENT_PBMessageRequest; // Sent by: Trident, Received by: Power Board 
+    protocol_MCMessageRequest_S TRIDENT_MCMessageRequest; // Sent by Trident, Received by: Motor Controller
+    protocol_ISOTP_S            TRIDENT_MCISOTP; // Sent by Trident, Received by: Motor Controller
 
-    protocol_deviceName_S    MC_deviceName; // Sent by Motor Controller, Received by Polaris
-    protocol_motorRPM_S      MC_motorRPMLow; // Sent by Motor Controller, Received by Polaris
-    protocol_motorRPM_S      MC_motorRPMHigh; // Sent by Motor Controller, Received by Polaris
-    protocol_ISOTP_S         MC_ISOTP; // Sent by Motor Controller, Received by Polaris
+    protocol_deviceName_S    MC_deviceName; // Sent by Motor Controller, Received by Trident
+    protocol_motorRPM_S      MC_motorRPMLow; // Sent by Motor Controller, Received by Trident
+    protocol_motorRPM_S      MC_motorRPMHigh; // Sent by Motor Controller, Received by Trident
+    protocol_ISOTP_S         MC_ISOTP; // Sent by Motor Controller, Received by Trident
 
-    protocol_deviceName_S    PB_deviceName; // Sent by Power Board, Received by Polaris
-    protocol_PBEnvData_S     PB_envData; // Sent by Power Board, Received by Polaris
-    protocol_PBBattVoltages_S PB_battVoltages; // Sent by Power Board, Received by Polaris
-    protocol_PBBattCurrents_S PB_battCurrents; // Sent by Power Board, Received by Polaris
+    protocol_deviceName_S    PB_deviceName; // Sent by Power Board, Received by Trident
+    protocol_PBEnvData_S     PB_envData; // Sent by Power Board, Received by Trident
+    protocol_PBBattVoltages_S PB_battVoltages; // Sent by Power Board, Received by Trident
+    protocol_PBBattCurrents_S PB_battCurrents; // Sent by Power Board, Received by Trident
 } protocol_allMessages_U;
 
 typedef struct __attribute__((packed))
